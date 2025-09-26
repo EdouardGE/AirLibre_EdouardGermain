@@ -1,0 +1,9 @@
+{% extends 'activities/base.html' %}
+
+{% block content %}
+<div class="container text-center py-5">
+    <h1 class="display-4 text-danger">Erreur 500</h1>
+    <p>Désolé… Une erreur interne est survenue.</p>
+    <a href="{% url 'index' %}" class="btn btn-primary mt-3">Retour à l'accueil</a>
+</div>
+{% endblock %}

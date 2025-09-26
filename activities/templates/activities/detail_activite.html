@@ -1,0 +1,51 @@
+{% extends 'activities/base.html' %}
+
+{% block title %}Détails de l’activité{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg p-4" style="width: 800px;">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success mb-3">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        <h2 class="mb-4">Détails de l’activité</h2>
+        <h5>{{ activity.title }}</h5>
+        <p><strong>Description :</strong> {{ activity.description }}</p>
+        <p><strong>Catégorie :</strong> {{ activity.category }}</p>
+        <p><strong>Lieu :</strong> {{ activity.location_city }}</p>
+        <p><strong>Qualité de l'air :</strong> {{ activity.air_quality }}</p>
+        <p><strong>Date et heure de début :</strong> {{ activity.start_time|date:"d/m/Y H:i" }}</p>
+        <p><strong>Date et heure de fin :</strong> {{ activity.end_time|date:"d/m/Y H:i" }}</p>
+        <p><strong>Organisateur :</strong> <a href="{% url 'profile' activity.proposer.id %}">{{ activity.proposer.username }}</a></p>
+        <div class="d-flex">
+            <p><strong>Participants ({{ activity.attendees.count }}):</strong></p>
+            <div class="d-flex" style="gap: 10px; margin-left: 10px;">
+                {% for attendee in activity.attendees.all %}
+                    <p><a href="{% url 'profile' attendee.id %}">{{ attendee.username }}</a>,</p>
+                {% empty %}
+                    <p class="text-muted">Aucun participant inscrit pour le moment.</p>
+                {% endfor %}
+            </div>
+        </div>
+        {% if user.is_authenticated %}
+            {% if activity.proposer == user %}
+                <p class="text-muted">Vous êtes l'organisateur de cette activité.</p>
+            {% elif user in activity.attendees.all %}
+                <form method="post" novalidate action="{% url 'desinscription_activite' activity.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary w-100">Se désinscrire</button>
+                </form>
+            {% else %}
+                <form method="post" novalidate action="{% url 'inscription_activite' activity.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary w-100">S’inscrire</button>
+                </form>
+            {% endif %}
+        {% else %}
+            <p class="text-muted">Connectez-vous pour vous inscrire à cette activité.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

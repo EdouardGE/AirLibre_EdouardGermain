@@ -1,0 +1,71 @@
+{% extends 'activities/base.html' %}
+
+{% block title %}Ajouter une activité{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center vh-100">
+    <div class="card shadow-lg p-4" style="width: 1000px;">
+        <h2 class="mb-4">Ajouter une activité</h2>
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == "error" %}
+                    <div class="alert alert-danger mb-3">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <form method="post" novalidate>
+            {% csrf_token %}
+
+            <div class="mb-3">
+                {{ form.title.label_tag }}
+                {{ form.title }}
+                {% if form.title.errors %}
+                    <div class="text-danger small">{{ form.title.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.description.label_tag }}
+                {{ form.description }}
+                {% if form.description.errors %}
+                    <div class="text-danger small">{{ form.description.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.location_city.label_tag }}
+                {{ form.location_city }}
+                {% if form.location_city.errors %}
+                    <div class="text-danger small">{{ form.location_city.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.category.label_tag }}
+                {{ form.category }}
+                {% if form.category.errors %}
+                    <div class="text-danger small">{{ form.category.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.start_time.label_tag }}
+                {{ form.start_time }}
+                {% if form.start_time.errors %}
+                    <div class="text-danger small">{{ form.start_time.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.end_time.label_tag }}
+                {{ form.end_time }}
+                {% if form.end_time.errors %}
+                    <div class="text-danger small">{{ form.end_time.errors }}</div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary bg-dark text-light border-warning shadow-s">Ajouter</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

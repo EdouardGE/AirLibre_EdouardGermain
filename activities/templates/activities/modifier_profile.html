@@ -1,0 +1,63 @@
+{% extends 'activities/base.html' %}
+
+{% block title %}Modifier votre profil{% endblock %}
+
+{% block content %}
+<div class="container d-flex justify-content-center align-items-center vh-200">
+    <div class="card shadow-lg p-4" style="width: 1000px;">
+        <h2 class="mb-4">Modifier votre profil</h2>
+        {% if messages %}
+            {% for message in messages %}
+                {% if message.tags == "error" %}
+                    <div class="alert alert-danger mb-3">{{ message }}</div>
+                {% endif %}
+            {% endfor %}
+        {% endif %}
+        <form method="post" novalidate enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="mb-3">
+                {{ form.avatar.label_tag }}
+                {{ form.avatar }}
+                {% if form.avatar.errors %}
+                    <div class="text-danger small">{{ form.avatar.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.first_name.label_tag }}
+                {{ form.first_name }}
+                {% if form.first_name.errors %}
+                    <div class="text-danger small">{{ form.first_name.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.last_name.label_tag }}
+                {{ form.last_name }}
+                {% if form.last_name.errors %}
+                    <div class="text-danger small">{{ form.last_name.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.email.label_tag }}
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <div class="text-danger small">{{ form.email.errors }}</div>
+                {% endif %}
+            </div>
+
+            <div class="mb-3">
+                {{ form.bio.label_tag }}
+                {{ form.bio }}
+                {% if form.bio.errors %}
+                    <div class="text-danger small">{{ form.bio.errors }}</div>
+                {% endif %}
+            </div>
+
+            <button type="submit" class="btn btn-primary bg-dark text-light border-warning shadow-s">Modifier</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

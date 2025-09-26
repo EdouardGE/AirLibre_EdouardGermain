@@ -1,0 +1,78 @@
+{% extends 'activities/base.html' %}
+
+{% block title %}Profil{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Profil de {{ profile_user.username }}</h2>
+<div class="mb-4 container d-flex justify-content-center align-items-center ">
+
+    <div class="card shadow-lg p-4" style="width: 800px;">
+
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-success mb-3">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+
+        <div class="d-flex align-items-center">
+            <div class="text-center pe-4 d-flex flex-column align-items-center justify-content-center"
+                style="flex: 0 0 150px; min-height: 200px;">
+                <img src="{{ profile_user.get_avatar_url }}" alt="Avatar de {{ profile_user.username }}" class="img-thumbnail rounded-circle mb-2" width="120">
+                {% if request.user == profile_user %}
+                    <a href="{% url 'modifier_profile' profile_user.id %}" class="btn btn-secondary btn-sm bg-dark text-light border-warning shadow-s">
+                        Modifier le profil
+                    </a>
+                {% endif %}
+            </div>
+            <div style="flex: 1; display: grid; grid-template-columns: 1fr 1fr; gap: 0.5rem 2rem; border-left: 1px solid #ddd; padding: 2rem;">
+                <div>
+                    <p><strong>Nom :</strong> {{ profile_user.last_name }}</p>
+                </div>
+                <div>
+                    <p><strong>Adresse courriel :</strong> {{ profile_user.email }}</p>
+                </div>
+                <div>
+                    <p><strong>Prénom :</strong> {{ profile_user.first_name }}</p>
+                </div>
+                <div>
+                    <p><strong>Biographie :</strong> {{ profile_user.bio }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div>
+    <h3 class="mb-4">Historique des activités</h3>
+    <h4 class="mb-4">Activités proposées par {{ profile_user.username }}</h4>
+    <div class="d-flex flex-wrap justify-content-center mb-4">
+        {% for activity in activities %}
+            <div class="card shadow-lg p-4 justify-content-between" style="width: 300px; margin-right: 20px; margin-bottom: 20px;">
+                <h5>{{ activity.title }}</h5>
+                <p><strong>Lieu :</strong> {{ activity.location_city }}</p>
+                <p><strong>Catégorie :</strong> {{ activity.category }}</p>
+                <p><strong>Date et heure :</strong> {{ activity.start_time|date:"d/m/Y H:i" }}</p>
+                <p><strong>Organisateur :</strong> {{ activity.proposer.username }}</p>
+                <a href="{% url 'detail_activite' activity.id %}" class="btn btn-primary bg-dark text-light border-warning shadow-s">Voir les détails</a>
+            </div>
+        {% empty %}
+            <p>Aucune activité proposée.</p>
+        {% endfor %}
+    </div>
+    <h3 class="mb-4">Activités auxquelles {{ profile_user.username }} participe</h3>
+    <div class="d-flex flex-wrap justify-content-center">
+        {% for activity in mes_inscriptions %}
+            <div class="card shadow-lg p-4 justify-content-between" style="width: 300px; margin-right: 20px; margin-bottom: 20px;">
+                <h5>{{ activity.title }}</h5>
+                <p><strong>Lieu :</strong> {{ activity.location_city }}</p>
+                <p><strong>Catégorie :</strong> {{ activity.category }}</p>
+                <p><strong>Date et heure :</strong> {{ activity.start_time|date:"d/m/Y H:i" }}</p>
+                <p><strong>Organisateur :</strong> {{ activity.proposer.username }}</p>
+                <a href="{% url 'detail_activite' activity.id %}" class="btn btn-primary bg-dark text-light border-warning shadow-s">Voir les détails</a>
+            </div>
+        {% empty %}
+            <p>Aucune activité disponible.</p>
+        {% endfor %}
+    </div>
+
+</div>
+{% endblock %}
